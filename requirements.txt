@@ -4,4 +4,3 @@ tchan
 requests
 gspread
 oauth2client
-python-telegram-bot
