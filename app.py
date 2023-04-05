@@ -2,11 +2,13 @@ import os
 
 import gspread
 import requests
+import telegram
+import pandas as pd
 from flask import Flask, request
 from oauth2client.service_account import ServiceAccountCredentials
 from tchan import ChannelScraper
-import pandas as pd
-import csv
+from bs4 import BeautifulSoup
+
 
 TELEGRAM_API_KEY = os.environ["TELEGRAM_API_KEY"]
 TELEGRAM_ADMIN_ID = os.environ["TELEGRAM_ADMIN_ID"]
@@ -15,28 +17,57 @@ with open("credenciais.json", mode="w") as arquivo:
   arquivo.write(GOOGLE_SHEETS_CREDENTIALS)
 conta = ServiceAccountCredentials.from_json_keyfile_name("credenciais.json")
 api = gspread.authorize(conta)
-planilha = api.open_by_key("1ZDyxhXlCtCjMbyKvYmMt_8jAKN5JSoZ7x3MqlnoyzAM")
-sheet = planilha.worksheet("Sheet1")
+planilha = api.open_by_key("194kfy5ezKLuREJV7UO5mlEkZSYbUMaUQC2q5hi-XKb4")
+sheet = planilha.worksheet("robo_lucasduarte_bot")
 app = Flask(__name__)
 
 menu = """
-<a href="/">Página inicial</a> | <a href="/promocoes">PROMOÇÕES</a> | <a href="/sobre">Sobre</a> | <a href="/contato">Contato</a>
+<a href="/">Página inicial</a> | <a href="/noticias">NOTÍCIAS INDÍGENAS</a> | <a href="/sobre">Sobre</a> | <a href="/contato">Contato</a>
 <br>
 """
 
 @app.route("/")
 def index():
-  return menu + "Olá, mundo! Esse é meu site. (Álvaro Justen)"
+  return menu + "Olá, seja bem vindo ao site de notícias indígenas do jornalista Lucas Duarte"
 
 @app.route("/sobre")
 def sobre():
-  return menu + "Aqui vai o conteúdo da página Sobre"
+  return menu + "Robô de notícias indígenas: A análise de dados é uma ferramenta poderosa para a compreensão de tendências e padrões em diversos setores da sociedade. No contexto dos povos indígenas, a análise de notícias diárias pode ajudar a identificar padrões de violação de direitos humanos e a mapear a presença dessas comunidades em diferentes regiões. Nesse sentido, a utilização do método de raspagem em Python pode ser uma ferramenta valiosa para coletar e analisar notícias diárias sobre indígenas."
 
 @app.route("/contato")
 def contato():
-  return menu + "Aqui vai o conteúdo da página Contato"
+  return menu + "Mais informações: lucasduartematos@gmail.com"
   
-  
+@app.route("/noticias")
+def noticias_indigenas():
+  requisicao=requests.get('https://www.cnnbrasil.com.br/tudo-sobre/indigenas/')
+  html=BeautifulSoup(requisicao.content)
+  manchetes_indigenas=site.findAll('li',{'class':'home__list__item'})
+  lista_noticias=[]
+  for noticia in manchetes_indigenas:
+    manchete=noticia.text
+    link=noticia.find('a').get('href') 
+    lista_noticias.append([manchete, link])
+  df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
+  return df
+
+
+# Autenticando a API do Google Sheets
+scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+creds = ServiceAccountCredentials.from_json_keyfile_name('path/to/credentials.json', scope)
+client = gspread.authorize(creds)
+
+# Abrindo a planilha existente
+planilha = client.open('robo_lucasduarte_bot').sheet1
+
+# Adicionando novas linhas à planilha
+novas_linhas = [['Manchete 1', 'Link 1'], ['Manchete 2', 'Link 2']]
+planilha.add_rows(len(novas_linhas))
+for i, linha in enumerate(novas_linhas):
+    planilha.update(f'A{i+2}:B{i+2}', [linha])
+
+
+
   def processa_mensagens():
   # Seria interessante tratarmos duas possíveis exceções:
   # 1- caso a sheet não exista, criá-la
@@ -74,15 +105,9 @@ def contato():
 
     elif message.lower().strip() in ["/noticias", "/notícias"]:  # Tratamento da mensagem
       noticias = captura_ultimas_noticias()
-      texto_resposta = "Encontrei as seguintes notícias:\n"
+      texto_resposta = "Encontrei as seguintes notícias sobre indígenas:\n"
       for noticia in noticias:
         texto_resposta += f"- {noticia['title']} ({noticia['url']})\n"
-
-    elif message.lower().strip() in ["/promocoes", "/promoções", "/promocões", "/promoçoes"]:  # Tratamento da mensagem
-      promocoes = ultimas_promocoes()
-      texto_resposta = "Encontrei as seguintes promoções no @promocoeseachadinhos:\n"
-      for promocao in promocoes:
-        texto_resposta += f"- {promocao}\n"
 
     else:
       texto_resposta = "Não entendi!"
