@@ -2,7 +2,6 @@ import os
 
 import gspread
 import requests
-import telegram
 import pandas as pd
 from flask import Flask, request
 from oauth2client.service_account import ServiceAccountCredentials
