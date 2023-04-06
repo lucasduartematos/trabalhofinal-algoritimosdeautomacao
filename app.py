@@ -3,6 +3,7 @@ import os
 import gspread
 import requests
 import pandas as pd
+import telegram
 from flask import Flask, request
 from flask import Flask, Response
 from flask import Response
@@ -58,12 +59,13 @@ def planilha(df):
   sheet.append_rows(lista)
   return "Planilha escrita!"
 
-    # enviar as noticias para o Telegram
-    bot = telegram.Bot(token=TELEGRAM_API_KEY)
-    chat_id = TELEGRAM_ADMIN_ID
-    for noticia in lista_noticias:
-        mensagem = noticia[0] + "\n" + noticia[1]
-        bot.send_message(chat_id=chat_id, text=mensagem)
-
-    return "Notícias enviadas para o Telegram!"
+# enviar as noticias para o Telegram
+bot = telegram.Bot(token=TELEGRAM_API_KEY)
+chat_id = TELEGRAM_ADMIN_ID
+for noticia in lista_noticias:
+  mensagem = noticia[0] + "\n" + noticia[1]
+  bot.send_message(chat_id=chat_id, text=mensagem)
+  mensagem = noticia[0] + "\n" + noticia[1]
+  bot.send_message(chat_id=chat_id, text=mensagem)
+  return "Notícias enviadas para o Telegram!"
 
