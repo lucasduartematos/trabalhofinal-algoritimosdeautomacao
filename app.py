@@ -20,8 +20,8 @@ sheet = planilha.worksheet("robo_lucasduarte_bot")
 app = Flask(__name__)
 
 menu = """
-<a href="/">Página inicial</a> | <a href="/noticias">NOTÍCIAS INDÍGENAS</a> | <a href="/sobre">Sobre</a> | <a href="/contato">Contato</a>
-<br> | <a href="/planilha">Sobre</a>
+<a href="/">Página inicial</a> | <a href="/noticias">Notícias Indígenas</a> | <a href="/sobre">Sobre</a> | <a href="/contato">Contato</a>
+<br>
 """
 
 @app.route("/")
