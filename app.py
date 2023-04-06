@@ -49,7 +49,6 @@ def noticias_indigenas():
   df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
   return df
 
-@app.route("/planilha")
 def planilha():
   lista = df.values.tolist()
   sheet.append_rows(lista)
