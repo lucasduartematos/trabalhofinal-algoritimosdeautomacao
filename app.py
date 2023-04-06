@@ -53,7 +53,8 @@ def noticias_indigenas():
   tabela_html = df.to_html()
   return Response(tabela_html, mimetype='text/html')
 
-def planilha():
+def planilha(df):
   lista = df.values.tolist()
   sheet.append_rows(lista)
   return "Planilha escrita!"
+
