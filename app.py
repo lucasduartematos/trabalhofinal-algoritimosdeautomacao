@@ -89,8 +89,7 @@ def telegram_bot():
         print(resposta.text)
     
     return "ok"
-  
-  
+ 
   def raspa_noticias():
   requisicao=requests.get('https://www.cnnbrasil.com.br/tudo-sobre/indigenas/')
   html=BeautifulSoup(requisicao.content)
