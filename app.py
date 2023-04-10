@@ -67,7 +67,7 @@ def telegram_bot():
     
     if message == "/noticias":
         # Raspa as últimas 5 notícias do site da CNN
-        df_noticias = raspa_noticias()
+        df_noticias = noticias_indigenas()
         ultimas_noticias = df_noticias.head(5)
         tabela_html = ultimas_noticias.to_html()
         
@@ -89,8 +89,8 @@ def telegram_bot():
         print(resposta.text)
     
     return "ok"
- 
-  def raspa_noticias():
+  
+  def noticias_indigenas():
   requisicao=requests.get('https://www.cnnbrasil.com.br/tudo-sobre/indigenas/')
   html=BeautifulSoup(requisicao.content)
   manchetes_indigenas=html.findAll('li',{'class':'home__list__item'})
@@ -100,18 +100,6 @@ def telegram_bot():
     link=noticia.find('a').get('href') 
     lista_noticias.append([manchete, link])
   df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
-  return df
-
-  
-
-    
-  
-
-  
-  
- 
-    
-
-
-  
+  tabela_html = df.to_html()
+  return Response(tabela_html, mimetype='text/html')
 
