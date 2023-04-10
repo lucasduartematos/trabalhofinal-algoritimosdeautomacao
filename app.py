@@ -59,7 +59,7 @@ def planilha(df):
   sheet.append_rows(lista)
   return "Planilha escrita!"
 
-@app.route("/telegram-bot", methods=["POST"])
+@app.route("/noticias", methods=["POST"])
 def telegram_bot():
     update = request.json
     chat_id = update["message"]["chat"]["id"]
