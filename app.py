@@ -59,4 +59,49 @@ def planilha(df):
   sheet.append_rows(lista)
   return "Planilha escrita!"
 
+@app.route("/telegram-bot", methods=["POST"])
+def telegram_bot():
+    update = request.json
+    chat_id = update["message"]["chat"]["id"]
+    message = update["message"]["text"]
+    
+    if message == "/noticias":
+        # Raspa as últimas 5 notícias do site da CNN
+        noticias = raspar_noticias()
+        ultimas_noticias = noticias[:5]
+        
+        # Envia as últimas 5 notícias via webhook do Telegram
+        for noticia in ultimas_noticias:
+            nova_mensagem = {
+                "chat_id": chat_id,
+                "text": f"{noticia['Manchete']}\n{noticia['Link']}",
+            }
+            resposta = requests.post(f"https://api.telegram.org/bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
+            print(resposta.text)
+    else:
+        nova_mensagem = {
+            "chat_id": chat_id,
+            "text": f"Você enviou a mensagem: <b>{message}</b>",
+            "parse_mode": "HTML",
+        }
+        resposta = requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
+        print(resposta.text)
+    
+    return "ok"
+
+
+def noticias_indigenas():
+  requisicao=requests.get('https://www.cnnbrasil.com.br/tudo-sobre/indigenas/')
+  html=BeautifulSoup(requisicao.content)
+  manchetes_indigenas=html.findAll('li',{'class':'home__list__item'})
+  lista_noticias=[]
+  for noticia in manchetes_indigenas:
+    manchete=noticia.text
+    link=noticia.find('a').get('href') 
+    lista_noticias.append([manchete, link])
+  df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
+  tabela_html = df.to_html()
+  return Response(tabela_html, mimetype='text/html')
+
+
 
