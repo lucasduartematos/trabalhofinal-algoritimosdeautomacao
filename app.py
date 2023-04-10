@@ -67,17 +67,18 @@ def telegram_bot():
     
     if message == "/noticias":
         # Raspa as últimas 5 notícias do site da CNN
-        noticias = noticias_indigenas()
-        ultimas_noticias = noticias[:5]
+        df_noticias = raspa_noticias()
+        ultimas_noticias = df_noticias.head(5)
+        tabela_html = ultimas_noticias.to_html()
         
         # Envia as últimas 5 notícias via webhook do Telegram
-        for noticia in ultimas_noticias:
-            nova_mensagem = {
-                "chat_id": chat_id,
-                "text": f"{noticia['Manchete']}\n{noticia['Link']}",
-            }
-            resposta = requests.post(f"https://api.telegram.org/bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
-            print(resposta.text)
+        nova_mensagem = {
+            "chat_id": chat_id,
+            "text": tabela_html,
+            "parse_mode": "HTML",
+        }
+        resposta = requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
+        print(resposta.text)
     else:
         nova_mensagem = {
             "chat_id": chat_id,
@@ -88,6 +89,7 @@ def telegram_bot():
         print(resposta.text)
     
     return "ok"
+
   
   def raspa_noticias():
   requisicao=requests.get('https://www.cnnbrasil.com.br/tudo-sobre/indigenas/')
