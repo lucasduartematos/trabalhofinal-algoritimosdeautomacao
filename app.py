@@ -90,17 +90,21 @@ def telegram_bot():
     
     return "ok"
   
+  
   def raspa_noticias():
-    requisicao=requests.get('https://www.cnnbrasil.com.br/tudo-sobre/indigenas/')
-    html=BeautifulSoup(requisicao.content)
-    manchetes_indigenas=html.findAll('li',{'class':'home__list__item'})
-    lista_noticias=[]
-    for noticia in manchetes_indigenas:
-      manchete=noticia.text
-      link=noticia.find('a').get('href') 
-      lista_noticias.append([manchete, link])
-    df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
-    return df
+  requisicao=requests.get('https://www.cnnbrasil.com.br/tudo-sobre/indigenas/')
+  html=BeautifulSoup(requisicao.content)
+  manchetes_indigenas=html.findAll('li',{'class':'home__list__item'})
+  lista_noticias=[]
+  for noticia in manchetes_indigenas:
+    manchete=noticia.text
+    link=noticia.find('a').get('href') 
+    lista_noticias.append([manchete, link])
+  df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
+  return df
+
+  
+
     
   
 
