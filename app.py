@@ -67,7 +67,7 @@ def telegram_bot():
     
     if message == "/noticias":
         # Raspa as últimas 5 notícias do site da CNN
-        noticias = raspar_noticias()
+        noticias = noticias_indigenas()
         ultimas_noticias = noticias[:5]
         
         # Envia as últimas 5 notícias via webhook do Telegram
