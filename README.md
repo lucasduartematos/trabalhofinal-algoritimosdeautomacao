@@ -2,6 +2,7 @@
 Trabalho final da disciplina Algoritmos de Automação do Master de Jornalismo de Dados, Automação e Data Storytelling do Insper
 
 >> Análise de dados de notícias sobre indígenas no Brasil
+
 A análise de dados é uma ferramenta poderosa para a compreensão de tendências e padrões em diversos setores da sociedade. 
 No contexto dos povos indígenas, a análise de notícias diárias pode ajudar a identificar padrões de violação de direitos humanos e a mapear a presença dessas comunidades 
 em diferentes regiões. Nesse sentido, a utilização do método de raspagem em Python pode ser uma ferramenta valiosa para coletar e analisar notícias diárias sobre 
