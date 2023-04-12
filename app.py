@@ -24,7 +24,7 @@ sheet = planilha.worksheet("robo_lucasduarte_bot")
 app = Flask(__name__)
 
 menu = """
-<a href="/">Página inicial</a> | <a href="/noticias">Notícias Indígenas</a> | <a href="/sobre">Sobre</a> | <a href="/contato">Contato</a>
+<a href="/">Página inicial</a> | <a href="/noticias">Notícias Indígenas CNN</a> | <a href="/noticias2">Notícias Indígenas Folha de São Paulo</a> | <a href="/sobre">Sobre o site</a> | <a href="/contato">Contato</a>
 <br>
 """
 
@@ -38,7 +38,7 @@ def sobre():
 
 @app.route("/contato")
 def contato():
-  return menu + "Mais informações: lucasduartematos@gmail.com"
+  return menu + "Mais informações: Lucas Duarte, jornalista | lucasduartematos@gmail.com | (91) 981235649"
   
 @app.route("/noticias")
 def noticias_indigenas():
@@ -59,35 +59,25 @@ def planilha(df):
   sheet.append_rows(lista)
   return "Planilha escrita!"
 
-@app.route("/noticias", methods=["POST"])
-def telegram_bot():
-    update = request.json
-    chat_id = update["message"]["chat"]["id"]
-    message = update["message"]["text"]
+@app.route("/noticias2")
+def noticias_indigenas_folha():
+  requisicao=requests.get('https://www1.folha.uol.com.br/folha-topicos/indigenas/')
+  html=BeautifulSoup(requisicao.content)
+  manchetes_indigenas_folha=html.findAll('div',{'class':'c-headline c-headline--newslist'})
+  lista_noticias=[]
+  for noticia in manchetes_indigenas_folha:
+    manchete = noticia.find('h2').text.strip()
+    link = noticia.find('a').get('href') 
+    lista_noticias.append([manchete, link])
     
-    if message == "/noticias":
-        # Raspa as últimas 5 notícias do site da CNN
-        df_noticias = noticias_indigenas()
-        ultimas_noticias = df_noticias.head(5)
-        tabela_html = ultimas_noticias.to_html()
-        
-        # Envia as últimas 5 notícias via webhook do Telegram
-        nova_mensagem = {
-            "chat_id": chat_id,
-            "text": tabela_html,
-            "parse_mode": "HTML",
-        }
-        resposta = requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
-        print(resposta.text)
-    else:
-        nova_mensagem = {
-            "chat_id": chat_id,
-            "text": f"Você enviou a mensagem: <b>{message}</b>",
-            "parse_mode": "HTML",
-        }
-        resposta = requests.post(f"https://api.telegram.org./bot{TELEGRAM_API_KEY}/sendMessage", data=nova_mensagem)
-        print(resposta.text)
+  for i, row in enumerate(lista_noticias):
+    lista_noticias[i][0] = row[0].replace('notícias para assinantes - ', '')
     
-    return "ok"
- 
+  df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
+  return df
+
+def planilha(df):
+  lista = df.values.tolist()
+  sheet.append_rows(lista)
+  return "Planilha escrita!"
 
