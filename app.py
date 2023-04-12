@@ -42,17 +42,17 @@ def contato():
   
 @app.route("/noticias")
 def noticias_indigenas():
-  requisicao=requests.get('https://www.cnnbrasil.com.br/tudo-sobre/indigenas/')
-  html=BeautifulSoup(requisicao.content)
-  manchetes_indigenas=html.findAll('li',{'class':'home__list__item'})
-  lista_noticias=[]
-  for noticia in manchetes_indigenas:
-    manchete=noticia.text
-    link=noticia.find('a').get('href') 
-    lista_noticias.append([manchete, link])
-  df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
-  tabela_html = df.to_html()
-  return Response(tabela_html, mimetype='text/html')
+    requisicao=requests.get('https://www.cnnbrasil.com.br/tudo-sobre/indigenas/')
+    html=BeautifulSoup(requisicao.content)
+    manchetes_indigenas=html.findAll('li',{'class':'home__list__item'})
+    lista_noticias=[]
+    for noticia in manchetes_indigenas:
+        manchete=noticia.text
+        link=noticia.find('a')['href'] 
+        lista_noticias.append([manchete, link])
+    df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
+    tabela_html = df.to_html()
+    return Response(tabela_html, mimetype='text/html')
 
 def planilha(df):
   lista = df.values.tolist()
@@ -61,21 +61,21 @@ def planilha(df):
 
 @app.route("/noticias2")
 def noticias_indigenas_folha():
-  requisicao=requests.get('https://www1.folha.uol.com.br/folha-topicos/indigenas/')
-  html=BeautifulSoup(requisicao.content)
-  manchetes_indigenas_folha=html.findAll('div',{'class':'c-headline c-headline--newslist'})
-  lista_noticias=[]
-  for noticia in manchetes_indigenas_folha:
-    manchete = noticia.find('h2').text.strip()
-    link = noticia.find('a').get('href') 
-    lista_noticias.append([manchete, link])
+    requisicao=requests.get('https://www1.folha.uol.com.br/folha-topicos/indigenas/')
+    html=BeautifulSoup(requisicao.content)
+    manchetes_indigenas_folha=html.findAll('div',{'class':'c-headline c-headline--newslist'})
+    lista_noticias=[]
+    for noticia in manchetes_indigenas_folha:
+        manchete = noticia.find('h2').text.strip()
+        link = noticia.find('a')['href'] 
+        lista_noticias.append([manchete, link])
     
-  for i, row in enumerate(lista_noticias):
-    lista_noticias[i][0] = row[0].replace('notícias para assinantes - ', '')
+    for i, row in enumerate(lista_noticias):
+        lista_noticias[i][0] = row[0].replace('notícias para assinantes - ', '')
     
-  df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
-  tabela_html = df.to_html()
-  return Response(tabela_html, mimetype='text/html')
+    df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
+    tabela_html = df.to_html()
+    return Response(tabela_html, mimetype='text/html')
 
 def planilha(df):
   lista = df.values.tolist()
