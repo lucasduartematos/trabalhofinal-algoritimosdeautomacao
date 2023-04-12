@@ -48,10 +48,11 @@ def noticias_indigenas():
     lista_noticias=[]
     for noticia in manchetes_indigenas:
         manchete=noticia.text
-        link=noticia.find('a')['href'] 
-        lista_noticias.append([manchete, link])
+        link=noticia.find('a')['href']
+        link_html = f'<a href="{link}">{link}</a>'
+        lista_noticias.append([manchete, link_html])
     df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
-    tabela_html = df.to_html()
+    tabela_html = df.to_html(escape=False)
     return Response(tabela_html, mimetype='text/html')
 
 def planilha(df):
