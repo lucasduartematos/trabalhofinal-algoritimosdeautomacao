@@ -75,8 +75,10 @@ def noticias_indigenas_folha():
         lista_noticias[i][0] = row[0].replace('notícias para assinantes - ', '')
     
     df=pd.DataFrame(lista_noticias, columns=['Manchete','Link'])
-    tabela_html = df.to_html()
+    df['Link'] = df['Link'].apply(lambda x: f"<a href='{x}'>{x}</a>")
+    tabela_html = df.to_html(escape=False)
     return Response(tabela_html, mimetype='text/html')
+
 
 def planilha(df):
   lista = df.values.tolist()
