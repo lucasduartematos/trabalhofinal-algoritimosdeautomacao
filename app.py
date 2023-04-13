@@ -30,7 +30,29 @@ menu = """
 
 @app.route("/")
 def index():
-  return menu + "Olá, seja bem-vindo(a) ao site de notícias indígenas do jornalista Lucas Duarte"
+    return """
+    <html>
+        <head>
+            <title>Site de Notícias Indígenas</title>
+            <style>
+                body {
+                    background-color: #f1f1f1;
+                    font-size: 16px;
+                }
+            </style>
+        </head>
+        <body>
+            <div style="text-align:center">
+                <img src="https://mlqojed3n5j0.i.optimole.com/MrcTY7k-eVBzzhmU/w:681/h:681/q:mauto/f:avif/https://motagodinho.com.br/wp-content/uploads/elementor/thumbs/imagem1-2-p1emhg6s86hyrs7xtocumquao48bq353hi13gs9eyo.jpg">
+            </div>
+            <br>
+            """ + menu + """
+            <br>
+            <p>Olá, seja bem-vindo(a) ao site de notícias indígenas do jornalista Lucas Duarte</p>
+        </body>
+    </html>
+    """
+
 
 @app.route("/sobre")
 def sobre():
