@@ -1,8 +1,6 @@
 # trabalhofinal-algoritimosdeautomacao
 Trabalho final da disciplina Algoritmos de Automação do Master de Jornalismo de Dados, Automação e Data Storytelling do Insper
 
-https://mlqojed3n5j0.i.optimole.com/MrcTY7k-eVBzzhmU/w:681/h:681/q:mauto/f:avif/https://motagodinho.com.br/wp-content/uploads/elementor/thumbs/imagem1-2-p1emhg6s86hyrs7xtocumquao48bq353hi13gs9eyo.jpg
-
 >> Análise de dados de notícias sobre indígenas no Brasil
 
 A análise de dados é uma ferramenta poderosa para a compreensão de tendências e padrões em diversos setores da sociedade. 
