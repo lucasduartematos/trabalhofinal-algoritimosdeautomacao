@@ -43,7 +43,7 @@ def index():
         </head>
         <body>
             <div style="text-align:center">
-                <img src="http://www.unama.br/sites/unama.br/files/fields/imagemTopo/noticias/2017/04/benicio_pitaguary.jpg">
+                <img src="http://www.prefeitura.sp.gov.br/cidade/secretarias/upload/2018%20Dia%20Povos%20Indigenas.jpg">
             </div>
             <br>
             """ + menu + """
