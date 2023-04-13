@@ -43,7 +43,7 @@ def index():
         </head>
         <body>
             <div style="text-align:center">
-                <img src="https://mlqojed3n5j0.i.optimole.com/MrcTY7k-eVBzzhmU/w:681/h:681/q:mauto/f:avif/https://motagodinho.com.br/wp-content/uploads/elementor/thumbs/imagem1-2-p1emhg6s86hyrs7xtocumquao48bq353hi13gs9eyo.jpg">
+                <img src="http://www.unama.br/sites/unama.br/files/fields/imagemTopo/noticias/2017/04/benicio_pitaguary.jpg">
             </div>
             <br>
             """ + menu + """
